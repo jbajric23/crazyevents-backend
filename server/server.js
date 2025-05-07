@@ -22,7 +22,7 @@ server.listen(port, () => {
         }
     }
     console.log(`Server running on:`);
-    // Or Try Emulator IP: 10.0.2.2
+    // Or Try Emulator IP address: 10.0.2.2
     console.log(`- http://localhost:${port}`);
     addresses.forEach((address) => {
         console.log(`- http://${address}:${port}`);

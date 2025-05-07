@@ -4,7 +4,7 @@ module.exports = (server) => {
 
     // Example route
     server.get('/', (req, res) => {
-        res.send('Welcome to CrazyEvents-Backend!');
+        res.send('Welcome to the CrazyEvents-Backend!');
     });
 
     server.get('/events', (req, res) => {
