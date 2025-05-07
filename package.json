@@ -7,7 +7,7 @@
     "serve": "node server/server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Jasmin Bajric",
   "license": "ISC",
   "description": "",
   "dependencies": {
