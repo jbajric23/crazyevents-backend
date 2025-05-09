@@ -11,7 +11,7 @@ module.exports = (server) => {
        EventController.getDummyEvents(req, res).then(r => {});
     });
 
-    server.get('/event/:id', (req, res) => {
-        EventController.getDummyEventsById(req, res).then(r => {});
+    server.get('/event/:title', (req, res) => {
+        EventController.getDummyEventsByTitle(req, res).then(r => {});
     })
 }

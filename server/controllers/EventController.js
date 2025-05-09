@@ -1,15 +1,13 @@
-const { Events } = require('../models/dummyEvent');
+const Event = require('../models/dummyEvent');
 const {join} = require("node:path");
 const {readFileSync} = require("node:fs");
 
 // Dummy data for events
 function loadDummyData(req, res) {
-    const eventsFilePath = join(__dirname, '../data/dummyEvents.json');
     let events = [];
 
     try {
-        const data = readFileSync(eventsFilePath, 'utf8');
-        events = JSON.parse(data);
+        events = Event.getDummyEvents();
     } catch (error) {
         console.error('Error while loading data:', error);
     }
@@ -19,18 +17,19 @@ function loadDummyData(req, res) {
 module.exports = {
     async getDummyEvents(req, res) {
         try {
-            res.send(loadDummyData());
+            const events = loadDummyData();
+            res.json(events); // Daten als JSON zurückgeben
         } catch (error) {
             console.error('Error while getting dummy events:', error);
             res.status(500).send('Internal Server Error');
         }
     },
-    async getDummyEventsById(req, res) {
-        const { id } = req.params;
+    async getDummyEventsByTitle(req, res) {
+        const { title } = req.params;
         const events = loadDummyData();
-        const event = events.find(event => event.id === parseInt(id));
+        const event = events.find(event => event.title.toLowerCase() === title.toLowerCase());
         if (event) {
-            res.send(event);
+            res.json(event); // Daten als JSON zurückgeben
         } else {
             res.status(404).send('Event not found');
         }
