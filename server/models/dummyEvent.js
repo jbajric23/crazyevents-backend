@@ -13,22 +13,26 @@ class Event {
     static getDummyEvents() {
         return [
             new Event(
-                "Summer Festival",
+                "Summer Festival für Faryal",
                 "Ein buntes Open-Air-Konzert im Stadtpark",
                 "Stadtpark",
                 "iwo",
                 "John Doe",
                 "2025-06-21 18:00",
-                "Music"
+                "Music",
+                "data/logo.png",
+                12,
             ),
             new Event(
                 "Art Exhibition",
                 "Zeitgenössische Kunstwerke ausstellen",
-                "Stadtpark",
+                "Museum der Moderne",
                 "iwo",
                 "Art Gallery",
                 "2025-07-10 10:00",
-                "Art"
+                "Art",
+                "data/logo.png",
+                20,
             ),
             new Event(
                 "Tech Meetup",
@@ -37,7 +41,9 @@ class Event {
                 "iwo",
                 "Tech Community",
                 "2025-05-20 18:30",
-                "Tech"
+                "Tech",
+                "data/logo.png",
+                30,
             ),
             new Event(
                 "Cooking Class",
@@ -46,7 +52,9 @@ class Event {
                 "iwo",
                 "Chef Anna",
                 "2025-05-15 14:00",
-                "Cooking"
+                "Cooking",
+                "data/logo.png",
+                40,
             ),
             new Event(
                 "Vienna City Marathon",
@@ -55,7 +63,9 @@ class Event {
                 "iwo",
                 "Sports Club",
                 "2025-09-01 09:00",
-                "Sports"
+                "Sports",
+                "data/logo.png",
+                50,
             )
         ];
     }

@@ -1,4 +1,5 @@
-const EventController = require('../controllers/eventController');
+const EventController = require('../controllers/EventController');
+const PosterController = require("../controllers/PosterController");
 
 module.exports = (server) => {
 
@@ -13,5 +14,13 @@ module.exports = (server) => {
 
     server.get('/event/:title', (req, res) => {
         EventController.getDummyEventsByTitle(req, res).then(r => {});
+    })
+
+    server.get('/posters', (req, res) => {
+        PosterController.getDummyPosters(req, res).then(r => {});
+    })
+
+    server.get('/posters/toggle/:id', (req, res) => {
+        PosterController.toggleFollowPoster(req, res).then(r => {});
     })
 }
