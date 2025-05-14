@@ -1,5 +1,6 @@
 class Event {
-    constructor(title, description, location, address, creator, date, category, mainImageUrl = 'data/logo.png', going = 0) {
+    constructor(id, title, description, location, address, creator, date, category, mainImageUrl = 'data/logo.png', going = 0) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.location = location;
@@ -13,6 +14,7 @@ class Event {
     static getDummyEvents() {
         return [
             new Event(
+                '1',
                 "Summer Festival für Faryal",
                 "Ein buntes Open-Air-Konzert im Stadtpark",
                 "Stadtpark",
@@ -24,6 +26,7 @@ class Event {
                 12,
             ),
             new Event(
+                '2',
                 "Art Exhibition",
                 "Zeitgenössische Kunstwerke ausstellen",
                 "Museum der Moderne",
@@ -35,6 +38,7 @@ class Event {
                 20,
             ),
             new Event(
+                '3',
                 "Tech Meetup",
                 "Neueste Tech-Trends diskutieren",
                 "Stadtpark",
@@ -46,6 +50,7 @@ class Event {
                 30,
             ),
             new Event(
+                '4',
                 "Cooking Class",
                 "Italienische Küche selbst zubereiten",
                 "Stadtpark",
@@ -57,6 +62,7 @@ class Event {
                 40,
             ),
             new Event(
+                '5',
                 "Vienna City Marathon",
                 "Stadtmarathon für Hobby- und Profi-Läufer",
                 "Stadtpark",

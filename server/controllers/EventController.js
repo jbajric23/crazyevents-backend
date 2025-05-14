@@ -33,5 +33,16 @@ module.exports = {
         } else {
             res.status(404).send('Event not found');
         }
+    },
+    async getDummyEventsById(req, res) {
+        const { id } = req.params;
+        const events = loadDummyData();
+        const event = events.find(e => String(e.id) === String(id));
+
+        if (event) {
+            res.json(event);
+        } else {
+            res.status(404).send('Event not found');
+        }
     }
 };

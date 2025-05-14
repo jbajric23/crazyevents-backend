@@ -16,6 +16,10 @@ module.exports = (server) => {
         EventController.getDummyEventsByTitle(req, res).then(r => {});
     })
 
+    server.get('/events/:id', (req, res) => {
+        EventController.getDummyEventsById(req, res).then(r => {});
+    });
+
     server.get('/posters', (req, res) => {
         PosterController.getDummyPosters(req, res).then(r => {});
     })
