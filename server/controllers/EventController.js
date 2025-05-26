@@ -44,5 +44,19 @@ module.exports = {
         } else {
             res.status(404).send('Event not found');
         }
+    },
+    async createDummyEvent(req, res) {
+        const { title, description, location, address, category, creator, date, mainImageUrl } = req.body;
+        const events = loadDummyData();
+        // ID anpassen
+        const newId = events.length ? Math.max(...events.map(e => e.id)) + 1 : 1;
+
+        const newEvent = new Event(newId, title, description, location, address, creator, date, category, mainImageUrl, 0);
+        console.log('Creating new event:', newEvent);
+
+        events.push(newEvent);
+
+        res.status(201).json(newEvent); // Neues Event als JSON zurückgeben
     }
+
 };

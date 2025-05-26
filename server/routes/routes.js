@@ -20,6 +20,14 @@ module.exports = (server) => {
         EventController.getDummyEventsById(req, res).then(r => {});
     });
 
+    server.post('/event', (req, res) => {
+        EventController.createDummyEvent(req, res).then(r => {});
+    });
+
+    /*****************************************************************
+     * Poster routes
+     *****************************************************************/
+
     server.get('/posters', (req, res) => {
         PosterController.getDummyPosters(req, res).then(r => {});
     })
