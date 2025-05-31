@@ -1,24 +1,12 @@
-const Event = require('../models/dummyEvent');
+const Event = require('../models/Event');
 const {join} = require("node:path");
 const {readFileSync} = require("node:fs");
 
-// Dummy data for events
-function loadDummyData(req, res) {
-    let events = [];
-
-    try {
-        events = Event.getDummyEvents();
-    } catch (error) {
-        console.error('Error while loading data:', error);
-    }
-    return events;
-}
-
 module.exports = {
-    async getDummyEvents(req, res) {
+    async getEvents(req, res) {
         try {
-            const events = loadDummyData();
-            res.json(events); // Daten als JSON zurückgeben
+            const events = await Event.find();
+            res.json(events);
         } catch (error) {
             console.error('Error while getting dummy events:', error);
             res.status(500).send('Internal Server Error');

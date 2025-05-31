@@ -2,6 +2,26 @@ const express = require('express');
 const server = express();
 const port = 3000;
 
+require('dotenv').config();
+const mongoose = require('mongoose');
+const cors = require('cors');
+
+const authRoutes = require('./routes/routes');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use('/auth', authRoutes);
+
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => {
+        console.log("✅ MongoDB verbunden");
+        app.listen(3000, () => console.log("🚀 Server läuft auf Port 3000"));
+    })
+    .catch(err => console.error("❌ MongoDB-Fehler:", err));
+
+
 // Middleware for JSON-Parsing
 server.use(express.json());
 
