@@ -3,6 +3,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const express = require('express');
+const Event = require('../models/Event');
 
 module.exports = (server) => {
 
