@@ -19,6 +19,10 @@ module.exports = (server) => {
         EventController.getDummyEventsByTitle(req, res).then(r => {});
     })
 
+    server.get('/events/:id', (req, res) => {
+        EventController.getSingleEventById(req, res).then(r => {});
+    });
+
     server.post('/event', (req, res) => {
         EventController.createDummyEvent(req, res).then(r => {});
     });

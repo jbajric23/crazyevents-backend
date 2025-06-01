@@ -22,9 +22,9 @@ module.exports = {
             res.status(404).send('Event not found');
         }
     },
-    async getDummyEventsById(req, res) {
+    async getSingleEventById(req, res) {
         const { id } = req.params;
-        const events = loadDummyData();
+        const events = await Event.find();
         const event = events.find(e => String(e.id) === String(id));
 
         if (event) {
