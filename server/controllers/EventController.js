@@ -1,6 +1,7 @@
 const Event = require('../models/Event');
 const {join} = require("node:path");
 const {readFileSync} = require("node:fs");
+// Implement mongoose connection
 
 module.exports = {
     async getEvents(req, res) {
@@ -34,17 +35,18 @@ module.exports = {
         }
     },
     async createDummyEvent(req, res) {
-        const { title, description, location, address, category, creator, date, mainImageUrl } = req.body;
-        const events = loadDummyData();
+        const { title, description, location, address, category, creator, date } = req.body;
+       // const events = loadDummyData();
         // ID anpassen
-        const newId = events.length ? Math.max(...events.map(e => e.id)) + 1 : 1;
-
-        const newEvent = new Event(newId, title, description, location, address, creator, date, category, mainImageUrl, 0);
+        //const newId = events.length ? Math.max(...events.map(e => e.id)) + 1 : 1;
+        //@TODO: Event in Mongodb hinzufügen
+        const newEvent = new Event( title, description, null, location, address, null, date, location, address);
         console.log('Creating new event:', newEvent);
 
         events.push(newEvent);
 
         res.status(201).json(newEvent); // Neues Event als JSON zurückgeben
     }
+
 
 };
