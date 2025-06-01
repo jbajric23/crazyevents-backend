@@ -63,4 +63,40 @@ module.exports = (server) => {
             res.status(500).json({ message: "Server error" });
         }
     });
+
+    // Middleware zur JWT-Verifizierung
+    const auth = (req, res, next) => {
+        const token = req.headers.authorization?.split(" ")[1];
+        if (!token) return res.status(401).json({ message: "No token" });
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = decoded;
+            next();
+        } catch {
+            res.status(403).json({ message: "Invalid token" });
+        }
+    };
+
+    server.post('/events/:id/interest', auth, async (req, res) => {
+        const userId = req.user.userId;
+        const eventId = req.params.id;
+
+        try {
+            const event = await Event.findById(eventId);
+            if (!event) return res.status(404).json({ message: "Event not found" });
+
+            const isGoing = event.goingTo.includes(userId);
+            if (isGoing) {
+                event.goingTo = event.goingTo.filter(id => id.toString() !== userId);
+            } else {
+                event.goingTo.push(userId);
+            }
+
+            await event.save();
+            res.json({ message: isGoing ? "Interest removed" : "Interest marked", goingTo: event.goingTo });
+        } catch (e) {
+            res.status(500).json({ message: "Server error", error: e.message });
+            console.error(e);
+        }
+    });
 }
