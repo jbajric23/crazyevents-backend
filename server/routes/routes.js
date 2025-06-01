@@ -27,14 +27,6 @@ module.exports = (server) => {
      * Poster routes
      *****************************************************************/
 
-    server.get('/posters', (req, res) => {
-        PosterController.getDummyPosters(req, res).then(r => {});
-    })
-
-    server.get('/posters/toggle/:id', (req, res) => {
-        PosterController.toggleFollowPoster(req, res).then(r => {});
-    })
-
     server.post('/register', async (req, res) => {
         const { email, password } = req.body;
 
