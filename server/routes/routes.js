@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const express = require('express');
 const Event = require('../models/Event');
+const { createEvent } = require('../controllers/eventController');
 
 module.exports = (server) => {
 
@@ -24,13 +25,7 @@ module.exports = (server) => {
         EventController.getSingleEventById(req, res).then(r => {});
     });
 
-    server.post('/event', (req, res) => {
-        EventController.createDummyEvent(req, res).then(r => {});
-    });
-
-    /*****************************************************************
-     * Poster routes
-     *****************************************************************/
+    server.post('/event', createEvent);
 
     server.post('/register', async (req, res) => {
         const { name, email, password } = req.body;

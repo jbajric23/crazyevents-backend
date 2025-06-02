@@ -34,19 +34,26 @@ module.exports = {
             res.status(404).send('Event not found');
         }
     },
-    async createDummyEvent(req, res) {
-        const { title, description, location, address, category, creator, date } = req.body;
-       // const events = loadDummyData();
-        // ID anpassen
-        //const newId = events.length ? Math.max(...events.map(e => e.id)) + 1 : 1;
-        //@TODO: Event in Mongodb hinzufügen
-        const newEvent = new Event( title, description, null, location, address, null, date, location, address);
-        console.log('Creating new event:', newEvent);
-
-        events.push(newEvent);
-
-        res.status(201).json(newEvent); // Neues Event als JSON zurückgeben
+    async createEvent(req, res) {
+        try {
+            const { title, description, category, creator, date, location, address } = req.body;
+            const event = new Event({
+                title,
+                description,
+                category,
+                creator,
+                date,
+                location,
+                address,
+                goingTo: []
+            });
+            await event.save();
+            res.status(201).json(event);
+        } catch (err) {
+            console.error('Fehler beim Erstellen des Events:', err);
+            console.log(err);
+            res.status(500).json({ message: 'Serverfehler', error: err.message });
+        }
     }
-
 
 };
