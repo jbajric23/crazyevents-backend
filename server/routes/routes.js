@@ -1,10 +1,12 @@
-const EventController = require('../controllers/eventController');
+const EventController = require('../controllers/EventController');
+const FollowController = require('../controllers/FollowController');
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const express = require('express');
 const Event = require('../models/Event');
-const { createEvent } = require('../controllers/eventController');
+const { createEvent } = require('../controllers/EventController');
+const Follow = require('../models/Follow');
 
 module.exports = (server) => {
 
@@ -15,6 +17,10 @@ module.exports = (server) => {
 
     server.get('/events', (req, res) => {
        EventController.getEvents(req, res).then(r => {});
+    });
+
+    server.get('/myevents/:id', (req, res) => {
+       EventController.getMyEvents(req, res).then(r => {});
     });
 
     server.get('/event/:title', (req, res) => {
@@ -80,6 +86,7 @@ module.exports = (server) => {
         }
     };
 
+    // Going to
     server.post('/events/:id/interest', auth, async (req, res) => {
         const userId = req.user.userId;
         const eventId = req.params.id;
@@ -102,4 +109,17 @@ module.exports = (server) => {
             console.error(e);
         }
     });
+
+    server.get('/posters', (req, res) => {
+       FollowController.getAllUsers(req, res).then(r => {});
+    });
+
+    server.get('/posters/:id', (req, res) => {
+       FollowController.getUsers(req, res).then(r => {});
+    });
+
+    server.get('/posters/toggle/:fid/:uid', (req, res) => {
+       FollowController.updateToggle(req, res).then(r => {});       
+    });
+
 }

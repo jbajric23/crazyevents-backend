@@ -1,7 +1,8 @@
 const Event = require('../models/Event');
+const Follow = require('../models/Follow');
 const {join} = require("node:path");
 const {readFileSync} = require("node:fs");
-// Implement mongoose connection
+const mongoose = require('mongoose');
 
 module.exports = {
     async getEvents(req, res) {
@@ -13,6 +14,34 @@ module.exports = {
             res.status(500).send('Internal Server Error');
         }
     },
+
+
+    async getMyEvents(req, res) {
+        try {
+            // 1. Aktuelle Benutzer-ID erhalten (normalerweise aus Auth-Token oder Session)
+            const currentUserId = req.params.id;
+
+        // 2. Follower-IDs finden (Benutzer, die dem aktuellen Benutzer folgen)
+        const followDocs = await Follow.find(
+            { following: currentUserId }, 
+            { _id: 0, follower: 1 } // Nur follower-Feld zurückgeben
+        );
+
+        // 3. Array von Follower-IDs erstellen
+        const followerIds = followDocs.map(doc => doc.follower);
+
+        // 4. Events dieser Follower abrufen
+        const events = await Event.find({
+            "creator.id": { $in: followerIds }
+        });
+
+            res.json(events);
+        } catch (error) {
+            console.error('Error while getting dummy events:', error);
+            res.status(500).send('Internal Server Error');
+        }
+    },
+
     async getDummyEventsByTitle(req, res) {
         const { title } = req.params;
         const events = loadDummyData();
