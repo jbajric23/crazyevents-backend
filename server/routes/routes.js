@@ -126,4 +126,8 @@ module.exports = (server) => {
 
     server.put("/users/:id", middleware, userController.updateUser)
 
+    server.get('/posters/follow/:fid/:uid', (req, res) => {
+       FollowController.isFollow(req, res).then(r => {});       
+    });
+    
 }

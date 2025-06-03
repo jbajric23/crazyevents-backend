@@ -54,13 +54,29 @@ module.exports = {
       }
     }
   ]);
-
-            
             res.json(users);
         } catch (error) {
             console.error('Error while getting dummy events:', error);
             res.status(500).send('Internal Server Error');
         }
+    },
+    async isFollow(req, res) {        
+            const follower = req.params.fid;
+            const following = req.params.uid;
+
+            if (!follower || !following) {
+                return res.status(400).json({ message: "Follower und Following müssen angegeben werden." });
+            }
+            if (follower === following) {
+                return res.status(400).json({ message: "Ein Benutzer kann sich nicht selbst folgen." });
+            }
+
+            const existingFollow = await Follow.findOne({ follower, following });
+            if(existingFollow) {
+              res.status(200).json({ follow: true });
+            } else {
+              res.status(200).json({ follow: false });
+            }          
     },
     async updateToggle(req, res) {        
 
@@ -90,7 +106,7 @@ module.exports = {
             return res.status(201).json({ message: "Gefolgt.", data: savedFollow });
         }
 
-            console.log(followerId, followingId)
+            //console.log(followerId, followingId)
             res.status(200).json({ message: "Followstatus changed" });
           } catch (err) {
             console.error("Fehler beim Follow-Toggle:", err);
