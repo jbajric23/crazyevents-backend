@@ -7,6 +7,8 @@ const express = require('express');
 const Event = require('../models/Event');
 const { createEvent } = require('../controllers/EventController');
 const Follow = require('../models/Follow');
+const middleware = require("../middleware/middleware");
+const userController = require('../controllers/UserController');
 
 module.exports = (server) => {
 
@@ -121,5 +123,7 @@ module.exports = (server) => {
     server.get('/posters/toggle/:fid/:uid', (req, res) => {
        FollowController.updateToggle(req, res).then(r => {});       
     });
+
+    server.put("/users/:id", middleware, userController.updateUser)
 
 }
