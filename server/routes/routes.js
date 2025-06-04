@@ -175,6 +175,26 @@ module.exports = (server) => {
         }
     });
 
+    server.put("/events/:id/gallery", middleware, upload.array("images", 5), async (req, res) => {
+        const eventId = req.params.id;
+        const files = req.files;
+
+        const baseUrl = "http://10.0.2.2:3000";
+        const imageUrls = files.map(file => `${baseUrl}/uploads/${file.filename}`);
+
+        try {
+            const event = await Event.findByIdAndUpdate(
+                eventId,
+                { $push: { gallery: { $each: imageUrls } } },
+                { new: true }
+            );
+            res.json(event);
+        } catch (err) {
+            res.status(500).json({ error: "Fehler beim Upload der Galerie-Bilder." });
+        }
+    });
+
+
     server.get("/events/:id", async (req, res) => {
         try {
             const event = await Event.findById(req.params.id);

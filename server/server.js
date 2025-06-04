@@ -7,11 +7,11 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require("path");
 
-// 1️⃣ MIDDLEWARE
+// Use Middleware
 app.use(cors());
 app.use(express.json());
 
-// 2️⃣ STATIC IMAGE DELIVERY (zuerst prüfen!)
+// Static Image Delivery
 app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
 
@@ -28,9 +28,9 @@ registerRoutes(app);  // ← app übergeben und verwenden
 // 4️⃣ MONGODB + SERVER START
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
-        console.log("✅ MongoDB verbunden");
+        console.log("MongoDB verbunden");
         app.listen(port, () => {
-            console.log("🚀 Server läuft auf:");
+            console.log("Server läuft auf:");
             console.log(`- http://localhost:${port}`);
             console.log(`- http://10.0.2.2:${port} (für Emulator)`);
 
@@ -44,5 +44,5 @@ mongoose.connect(process.env.MONGO_URI)
                 console.log(`- http://${address}:${port}`));
         });
     })
-    .catch(err => console.error("❌ MongoDB-Fehler:", err));
+    .catch(err => console.error("MongoDB-Fehler:", err));
 
