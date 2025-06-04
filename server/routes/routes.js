@@ -3,12 +3,28 @@ const FollowController = require('../controllers/FollowController');
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const express = require('express');
 const Event = require('../models/Event');
 const { createEvent } = require('../controllers/EventController');
 const Follow = require('../models/Follow');
 const middleware = require("../middleware/middleware");
 const userController = require('../controllers/UserController');
+const express = require("express");
+const multer = require("multer");
+const path = require("path");
+const { v4: uuidv4 } = require("uuid");
+
+// Speichere mit korrekter Dateiendung
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads/");
+    },
+    filename: function (req, file, cb) {
+        const ext = path.extname(file.originalname); // z. B. ".jpg"
+        cb(null, uuidv4() + ext);
+    },
+});
+const upload = multer({ storage });
+
 
 module.exports = (server) => {
 
@@ -129,5 +145,48 @@ module.exports = (server) => {
     server.get('/posters/follow/:fid/:uid', (req, res) => {
        FollowController.isFollow(req, res).then(r => {});       
     });
-    
+
+    server.put("/events/:id/images", middleware, upload.array("images", 5), async (req, res) => {
+        try {
+            const eventId = req.params.id;
+            const files = req.files;
+            const baseUrl = "http://10.0.2.2:3000";
+
+            if (!files || files.length === 0) {
+                return res.status(400).json({ error: "Keine Bilder hochgeladen" });
+            }
+
+            // Erzeuge URLs aus gespeicherten Dateinamen
+            const imageUrls = files.map(file => `${baseUrl}/uploads/${file.filename}`);
+
+            const event = await Event.findByIdAndUpdate(
+                eventId,
+                {
+                    $set: { mainImageUrl: imageUrls[0] },
+                    $push: { gallery: { $each: imageUrls.slice(1) } },
+                },
+                { new: true }
+            );
+
+            res.json(event);
+        } catch (err) {
+            console.error("Bild-Upload-Fehler:", err);
+            res.status(500).json({ error: "Serverfehler beim Hochladen der Bilder" });
+        }
+    });
+
+    server.get("/events/:id", async (req, res) => {
+        try {
+            const event = await Event.findById(req.params.id);
+            if (!event) {
+                return res.status(404).json({ error: "Event nicht gefunden" });
+            }
+            res.json(event);
+        } catch (err) {
+            console.error("GET /events/:id Fehler:", err);
+            res.status(500).json({ error: "Serverfehler" });
+        }
+    });
+
+
 }
